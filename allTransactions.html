@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>User Dashboard</title>
+    
+</head>
+<body>
+    <!-- Navbar -->
+    <div class="navbar">
+        <!-- Left Side: Logo -->
+        <img src="logo.png" alt="Logo" class="logo">
+        
+        <!-- Center: Organization Name -->
+        <div class="navbar-center">Bright Future</div>
+        
+        <!-- Right Side: Links -->
+        <div class="navbar-links">
+            <a href="index.html">Home</a>
+            <a href="allTransactions.html">All Transactions</a>
+            <a href="#">All Income</a>
+            <a href="#">All Expenses</a>
+        </div>
+    </div>
+
+    <!-- Main content -->
+        <!-- Main Content Container -->
+    <div class="container">
+        <h1 style="color:green; text-align: center;">Detailled Information of All collections</h1>
+        
+        <h1 class="due-paid">
+            <span id="totalDue"> </span> <br>
+            <span id="totalTaka"></span>
+        </h1>
+        <table id="transactionTable">
+            <tr>
+                <th>Transaction ID</th>
+                <th>User ID</th>
+                <th>Date (yy-mm-dd)</th>
+                <th>Month</th>
+                <th>Taka</th>
+            </tr>
+        </table>
+    </div> 
+
+   
+
+     
+    <!-- Footer Section -->
+    <footer>
+        <p>&copy; 2024 Future Dream Horizon. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Get the userID from the URL parameters
+        // const userID = new URLSearchParams(window.location.search).get('userID');
+        let total1 = 0;
+        let allPayable = 0;
+
+        // Fetch transactions from the Google Apps Script
+        fetch(`https://script.google.com/macros/s/AKfycbwlEAC-hAevu9P0RZUyLMg-8_btIaj8efJEX3zLxtTY5kow0HztK4ulflnXH6HzU_Uy2w/exec?getTransactions`)
+            .then(response => response.json())
+            .then(transactions => {
+                const table = document.getElementById('transactionTable');
+
+                // Loop through each transaction and filter by userID
+                transactions.forEach(trxn => {
+                    // Assuming userID is in the second column (index 1)
+                    if (trxn[1]) {
+                        total1 += parseFloat(trxn[4]) || 0; // Safely parse trxn[4] as a number
+                        //allPayable = -1 * total1;
+                        data = trxn;
+                        const row = table.insertRow();
+                            const cell0 = row.insertCell();
+                            cell0.innerText = data[0];
+                            
+                            const cell1 = row.insertCell();
+                            cell1.innerText = data[1];
+                            
+                            const cell2 = row.insertCell();
+                            cell2.innerText = data[2].slice(0,10);
+                            
+                            const cell3 = row.insertCell();
+                            cell3.innerText = data[3]+ '-'+data[5];
+                            
+                            const cell4 = row.insertCell();
+                            cell4.innerText = data[4];
+                    }
+                    else{
+                        return;
+                    }
+
+
+                });
+
+                // Display total after the loop completes
+                const TTK = total1;
+                document.getElementById('totalTaka').innerText = "Total Collection : " + TTK.toFixed(2);
+                callPayableAPI(total1);
+            })
+            .catch(error => console.error("Error fetching or processing data:", error));
+
+
+
+        //Fetch Payable amount
+        function callPayableAPI(total1){
+
+        
+            fetch('https://script.google.com/macros/s/AKfycbwlEAC-hAevu9P0RZUyLMg-8_btIaj8efJEX3zLxtTY5kow0HztK4ulflnXH6HzU_Uy2w/exec?getPayable')
+                .then(response =>{
+                    if(!response.ok){
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    
+                    data.forEach(paybleAmount => {
+                        allPayable += parseFloat(paybleAmount[2]) || 0;
+                    });
+                    
+                    const TPBL = (allPayable * 10) - total1;
+                    document.getElementById('totalDue').innerText = "Total Due: " + TPBL.toFixed(2);
+                    
+                })
+                .catch(error => console.error("Error fetching or processing data:", error));
+        }
+    </script>
+
+</body>
+</html>
