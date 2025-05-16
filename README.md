@@ -1,2 +1,2 @@
-# future-dream-horizon
+# Bright-Future
 Its a project for our community
