@@ -12,7 +12,7 @@
     <!-- Navbar -->
     <div class="navbar">
         <!-- Left Side: Logo -->
-        <img src="logo.png" alt="Logo" class="logo">
+        <img src="logo.png" alt="Logo" class="logo" style="border-radius: 50%;">
         
         <!-- Center: Organization Name -->
         <div class="navbar-center">Bright Future </div>
@@ -35,7 +35,7 @@
                 <th>User Name</th>
                 <th>Father's Name</th>
                 <th>Phone</th>
-                <th>Number of Share</th>
+                <th>Photo</th>
                 <th>Action</th>
             </tr>
         </table>
@@ -82,12 +82,12 @@
                         // const cell5 = row.insertCell();
                         // cell5.innerText = data[4];
                         
-                        //const cell6 = row.insertCell();
-                        //cell6.innerHTML = `<img src="${data[5]}" alt="User Image" style="width:60%; height:50%; align:center;">`;
+                        const cell6 = row.insertCell();
+                        cell6.innerHTML = `<img src="${data[5]}" alt="User Image" style="width:40px; height:20px align:center; border-radius:50%">`;
                         
-                        const cell7 = row.insertCell();
-                        cell7.innerText = data[6];
-                        cell7.style.textAlign = "center";
+                        //const cell7 = row.insertCell();
+                        //cell7.innerText = data[6];
+                        //cell7.style.textAlign = "center";
                         
 
                     const dashboardButton = document.createElement('button');
