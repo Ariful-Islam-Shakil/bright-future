@@ -82,6 +82,8 @@
                             const cell2 = row.insertCell();
                             cell2.innerText = data[2].slice(0,10);
                             
+                            
+                            
                             const cell3 = row.insertCell();
                             cell3.innerText = data[3]+ '-'+data[5];
                             
@@ -121,7 +123,7 @@
                         allPayable += parseFloat(paybleAmount[2]) || 0;
                     });
                     
-                    const TPBL = (allPayable * 10) - total1;
+                    const TPBL = (allPayable * 15) - total1;
                     document.getElementById('totalDue').innerText = "Total Due: " + TPBL.toFixed(2);
                     
                 })
